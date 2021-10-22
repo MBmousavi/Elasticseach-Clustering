@@ -1,14 +1,14 @@
+{% if ansible_hostname == 'node1' %}
+{% set master1 = 'node2' %} 
+{% set master2 = 'node3' %}
+{% endif %}
+{% if ansible_hostname == 'node2' %}
+{% set master1 = 'node1' %}
+{% set master2 = 'node3' %}
+{% endif %}
 {% if ansible_hostname == 'node3' %}
-{% set master1 = 'node4' %} 
-{% set master2 = 'node5' %}
-{% endif %}
-{% if ansible_hostname == 'node4' %}
-{% set master1 = 'node3' %}
-{% set master2 = 'node5' %}
-{% endif %}
-{% if ansible_hostname == 'node5' %}
-{% set master1 = 'node3' %}
-{% set master2 = 'node4' %}
+{% set master1 = 'node1' %}
+{% set master2 = 'node2' %}
 {% endif %}
 
 version: "3"
