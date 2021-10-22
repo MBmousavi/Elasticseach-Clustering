@@ -1,0 +1,37 @@
+{% if ansible_hostname == 'node3' %}
+{% set master1 = 'node4' %} 
+{% set master2 = 'node5' %}
+{% endif %}
+{% if ansible_hostname == 'node4' %}
+{% set master1 = 'node3' %}
+{% set master2 = 'node5' %}
+{% endif %}
+{% if ansible_hostname == 'node5' %}
+{% set master1 = 'node3' %}
+{% set master2 = 'node4' %}
+{% endif %}
+
+version: "3"
+services:
+       es:
+         image: {{ image }}
+         container_name: {{ ansible_hostname }}
+         network_mode: "host"
+         restart: always
+         environment:
+           - node.name={{ ansible_hostname }}
+           - cluster.name=es-cluster
+           - discovery.seed_hosts={{ master1 }},{{ master2 }}
+           - cluster.initial_master_nodes={{ ansible_hostname }},{{ master1 }},{{ master2 }}
+           - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+           - xpack.security.enabled=true
+           - xpack.security.transport.ssl.enabled=true
+           - xpack.security.transport.ssl.verification_mode=certificate
+           - xpack.security.transport.ssl.keystore.path=elastic-certificates.p12
+           - xpack.security.transport.ssl.truststore.path=elastic-certificates.p12
+           - node.master=true
+           - node.data=true
+
+         volumes:
+           - {{ volume }}:/usr/share/elasticsearch/data
+           - {{ root }}elastic-certificates.p12:/usr/share/elasticsearch/config/elastic-certificates.p12

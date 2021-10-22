@@ -1,0 +1,10 @@
+- hosts:
+  - all
+  gather_facts: True
+  roles:
+  - preinstall
+  - runcontainer
+- hosts:
+  - node3
+  roles:
+  - user

@@ -1,0 +1,30 @@
+- name: Creates directory
+  file:
+    path: "{{ root }}"
+    state: directory
+ 
+- name: copy docker-compose to nodes
+  template:
+    src: docker-compose.yaml.j2
+    dest: "{{ root }}docker-compose.yaml"
+
+- name: Delete old container
+  shell: docker-compose -f {{ root }}docker-compose.yaml down -v
+
+- name: Creating path for Elasticseach volume
+  shell: mkdir -p {{ volume }} && cd {{ volume }} && rm -rf * && chmod 777 {{ volume }}
+
+- name: copy cert to nodes.
+  copy:
+    src: elastic-certificates.p12
+    dest: "{{ root }}elastic-certificates.p12"
+
+- name: Runing Elasticseach Container ...
+  shell: docker-compose -f "{{ root }}docker-compose.yaml" up -d
+
+- name: Change ownership of cert file.
+  shell: docker exec "{{ ansible_hostname }}" chown elasticsearch:root "{{ config_path }}elastic-certificates.p12"
+
+- name: Chanage permission of cert file.
+  shell: docker exec "{{ ansible_hostname }}" chmod 600 "{{ config_path }}elastic-certificates.p12"
+

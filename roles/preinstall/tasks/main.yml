@@ -1,0 +1,5 @@
+- name: Pulling Elasticsearch docker image ...
+  shell: docker pull {{ image }}
+
+- name: Set vm.max_map_count
+  shell: sysctl -w vm.max_map_count=262144

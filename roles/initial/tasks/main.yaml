@@ -1,0 +1,18 @@
+- name: copy file1 to nodes
+  template:
+    src: 1.sql.j2
+    dest: "{{ volume }}1.sql"
+
+- name: copy file2 to nodes
+  template:
+    src: 2.sql.j2
+    dest: "{{ volume }}2.sql"
+
+- name: sleep for 15 sec to boot the mssql ...
+  shell: sleep 15
+
+- name: run 1.sql on nodes
+  shell: docker exec mssql /opt/mssql-tools/bin/sqlcmd -U sa -S {{ inventory_hostname }},{{ port }} -P {{ password }} -i /var/opt/mssql/1.sql 
+
+- name: run 2.sql on nodes
+  shell: docker exec mssql /opt/mssql-tools/bin/sqlcmd -U sa -S {{ inventory_hostname }},{{ port }} -P {{ password }} -i /var/opt/mssql/2.sql
