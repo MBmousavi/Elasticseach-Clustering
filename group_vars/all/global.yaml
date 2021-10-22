@@ -1,4 +1,4 @@
-image: harbor.resaa.net/hub/elasticsearch:7.14.2
+image: elasticsearch:7.14.2
 root: /opt/elasticsearch/
 volume: /opt/elasticsearch/data/
 config_path: /usr/share/elasticsearch/config/
