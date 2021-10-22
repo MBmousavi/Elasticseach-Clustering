@@ -4,7 +4,3 @@
   roles:
   - preinstall
   - runcontainer
-- hosts:
-  - node3
-  roles:
-  - user
