@@ -2,4 +2,3 @@ image: elasticsearch:7.14.2
 root: /opt/elasticsearch/
 volume: /opt/elasticsearch/data/
 config_path: /usr/share/elasticsearch/config/
-setup_passwords: /usr/share/elasticsearch/bin/elasticsearch-setup-passwords
